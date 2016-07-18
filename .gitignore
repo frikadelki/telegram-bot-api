@@ -12,8 +12,11 @@
 .project
 
 # Idea
-.idea/
+.idea/*
 *.iml
+
+# Idea exceptions
+!.idea/copyright/
 
 # Windows & OSX garbage
 .DS_Store
