@@ -26,25 +26,29 @@ public final class TgmJsonIO {
 				.build();
 	}
 
-	static String toJson(final Object object) {
+	public static String toJson(final Object object) {
 		if (null == object) {
 			return null;
 		}
 		return PRIVATE_INSTANCE.gson.toJson(object);
 	}
 
-	static JsonElement parseJsonElement(final String responseBody) throws JsonParseException {
+	public static JsonElement parseJsonElement(final String responseBody) throws JsonParseException {
 		if (null == responseBody) {
 			return null;
 		}
 		return PRIVATE_INSTANCE.jsonParser.parse(responseBody);
 	}
 
-	static <TData> TData fromJson(final JsonElement element, @NonNull final Class<TData> resultClass) throws JsonParseException {
+	public static <TData> TData fromJson(final JsonElement element, @NonNull final Class<TData> resultClass) throws JsonParseException {
 		if (null == element) {
 			return null;
 		}
 		return PRIVATE_INSTANCE.gson.fromJson(element, resultClass);
+	}
+
+	public static <TData> TData fromJson(final String jsonString, @NonNull final Class<TData> resultClass) throws JsonParseException {
+		return PRIVATE_INSTANCE.gson.fromJson(jsonString, resultClass);
 	}
 
 	private static class Builder {
