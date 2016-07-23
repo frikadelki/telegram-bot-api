@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.frikadelki.ash.telegram.api.TgmBotApi;
+import org.frikadelki.ash.telegram.api.base.TgmUpdate;
 import org.frikadelki.ash.telegram.api.chat.TgmBotApiChat;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
 import org.frikadelki.ash.telegram.api.misc.TgmBotApiMisc;
@@ -39,6 +40,11 @@ final class TgmBotApiImpl implements TgmBotApi {
 		@Override
 		public AshResultGist setWebhook(final WebhookParams params) {
 			return runtime.query("setWebhook", params, Void.class);
+		}
+
+		@Override
+		public AshResult<TgmUpdate[]> getUpdates(final UpdatesParams params) {
+			return runtime.query("getUpdates", params, TgmUpdate[].class);
 		}
 	};
 }

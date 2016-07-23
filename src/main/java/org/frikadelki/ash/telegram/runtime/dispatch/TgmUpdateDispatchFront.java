@@ -31,4 +31,8 @@ public final class TgmUpdateDispatchFront {
 			e.printStackTrace();
 		}
 	}
+
+	public void dispatchUpdate(@NonNull final TgmUpdateDispatchContext context, @NonNull final TgmUpdate update) {
+		dispatchCore.dispatchUpdate(context, update);
+	}
 }

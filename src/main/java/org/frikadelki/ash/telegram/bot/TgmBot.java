@@ -9,6 +9,7 @@ package org.frikadelki.ash.telegram.bot;
 import lombok.Getter;
 import lombok.NonNull;
 import org.frikadelki.ash.telegram.api.TgmBotApi;
+import org.frikadelki.ash.telegram.api.base.TgmUpdate;
 import org.frikadelki.ash.telegram.bot.commands.TgmCommandBody;
 import org.frikadelki.ash.telegram.bot.commands.TgmCommandsDispatch;
 import org.frikadelki.ash.telegram.runtime.dispatch.*;
@@ -39,5 +40,9 @@ public final class TgmBot {
 
 	public void dispatchRawUpdate(@NonNull final TgmUpdateDispatchContext dispatchContext, @NonNull final String updateJsonBodyString) {
 		updateDispatcher.dispatchRawUpdate(dispatchContext, updateJsonBodyString);
+	}
+
+	public void dispatchUpdate(@NonNull final TgmUpdateDispatchContext dispatchContext, @NonNull final TgmUpdate update) {
+		updateDispatcher.dispatchUpdate(dispatchContext, update);
 	}
 }

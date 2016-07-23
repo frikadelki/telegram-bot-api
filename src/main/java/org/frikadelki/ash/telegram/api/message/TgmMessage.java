@@ -8,6 +8,7 @@ package org.frikadelki.ash.telegram.api.message;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
+import lombok.NonNull;
 import org.frikadelki.ash.telegram.api.base.TgmEntity;
 import org.frikadelki.ash.telegram.api.chat.TgmChat;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
@@ -78,6 +79,10 @@ public final class TgmMessage {
 			}));
 		}
 		return entitiesCommands;
+	}
+
+	public String getEntityText(@NonNull final TgmMessageEntity entity) {
+		return entity.getEntityString(text);
 	}
 
 	/**

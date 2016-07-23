@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.NonNull;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
+import org.frikadelki.ash.toolset.utils.AshAssert;
 
 
 public final class TgmMessageEntity {
@@ -62,5 +63,10 @@ public final class TgmMessageEntity {
 
 	String getEntityString(final String text) {
 		return text.substring(offset, offset + length);
+	}
+
+	public static TgmUser user(@NonNull final TgmMessageEntity entity) {
+		AshAssert.aTrue(entity.is(Type.TEXT_MENTION));
+		return entity.user;
 	}
 }
