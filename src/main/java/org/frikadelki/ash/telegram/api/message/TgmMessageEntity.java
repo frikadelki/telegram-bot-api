@@ -7,6 +7,7 @@
 package org.frikadelki.ash.telegram.api.message;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 import lombok.NonNull;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
 
@@ -28,18 +29,38 @@ public final class TgmMessageEntity {
 		;
 	}
 
+	/**
+	 *Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text),
+	 * italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs),
+	 * text_mention (for users without usernames).
+	 */
 	private Type type = null;
-	private int offset = 0;
-	private int length = 0;
 
-	private String url = null;	// optional, text_link only
-	private TgmUser user = null; // optional, text_mention only
+	/**
+	 * Offset in UTF-16 code units to the start of the entity.
+	 */
+	@Getter private int offset = 0;
+
+	/**
+	 * Length of the entity in UTF-16 code units.
+	 */
+	@Getter private int length = 0;
+
+	/**
+	 * Optional. For “text_link” only, url that will be opened after user taps on the text.
+	 */
+	private String url = null;
+
+	/**
+	 * Optional. For “text_mention” only, the mentioned user.
+	 */
+	private TgmUser user = null;
 
 	public boolean is(@NonNull final Type type) {
 		return (this.type == type);
 	}
 
 	String getEntityString(final String text) {
-		return text.substring(offset, length);
+		return text.substring(offset, offset + length);
 	}
 }

@@ -16,8 +16,15 @@ public final class TgmUser {
 
 	@SerializedName("first_name")
 	@Getter private String firstName;
+
+	/**
+	 * Optional. User‘s or bot’s last name
+	 */
 	@SerializedName("last_name")
 	@Getter private String lastName;
 
+	/**
+	 * Optional. User‘s or bot’s username
+	 */
 	@Getter private String username;
 }
