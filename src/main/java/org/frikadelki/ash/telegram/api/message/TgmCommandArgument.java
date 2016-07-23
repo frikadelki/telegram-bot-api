@@ -8,8 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public final class TgmArgument
-{
+public final class TgmCommandArgument {
 	@Getter private final TgmMessageEntity attachedEntity;
 	@Getter private final String value;
 }

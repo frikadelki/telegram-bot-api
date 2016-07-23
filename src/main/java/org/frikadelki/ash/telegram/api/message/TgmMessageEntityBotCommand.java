@@ -26,11 +26,11 @@ public final class TgmMessageEntityBotCommand {
 		return entity.getEntityString(message.getText());
 	}
 
-	public TgmArgument[] getArguments() {
+	public TgmCommandArgument[] getArguments() {
 		return getArguments("\\s");
 	}
 
-	public TgmArgument[] getArguments(@NonNull final String delimiterRegex) {
+	public TgmCommandArgument[] getArguments(@NonNull final String delimiterRegex) {
 		TgmMessageEntity nextAfterMe = null;
 		final Iterable<TgmMessageEntity> commands = message.getEntities(TgmMessageEntity.Type.BOT_COMMAND);
 
@@ -52,7 +52,7 @@ public final class TgmMessageEntityBotCommand {
 		final Pattern pattern = WHITE_SPACE_REGULAR_EXPRESSION.equals(delimiterRegex) ? WHITESPACE_PATTERN : Pattern.compile(delimiterRegex);
 		final StringSplit.StringPiece[] split = StringSplit.split(arguments, pattern);
 
-		final TgmArgument[] result = new TgmArgument[split.length];
+		final TgmCommandArgument[] result = new TgmCommandArgument[split.length];
 
 		outer: for (int i = 0; i < split.length; i++) {
 			final StringSplit.StringPiece argumentToken = split[i];
@@ -61,12 +61,12 @@ public final class TgmMessageEntityBotCommand {
 			for (final TgmMessageEntity attachment : entities) {
 				if (argumentsStart + argumentToken.getStartIndex() == attachment.getOffset()
 						&& argumentsStart + argumentToken.getEndIndex() == attachment.getOffset() + attachment.getLength()) {
-					result[i] = new TgmArgument(attachment, argumentToken.getValue());
+					result[i] = new TgmCommandArgument(attachment, argumentToken.getValue());
 					continue outer;
 				}
 			}
 
-			result[i] = new TgmArgument(null, argumentToken.getValue());
+			result[i] = new TgmCommandArgument(null, argumentToken.getValue());
 		}
 
 		return result;

@@ -65,7 +65,7 @@ public final class TgmMessageEntity {
 		return text.substring(offset, offset + length);
 	}
 
-	public static TgmUser user(@NonNull final TgmMessageEntity entity) {
+	public TgmUser getTextMentionUser(@NonNull final TgmMessageEntity entity) {
 		AshAssert.aTrue(entity.is(Type.TEXT_MENTION));
 		return entity.user;
 	}

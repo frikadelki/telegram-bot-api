@@ -13,11 +13,10 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class StringSplit
-{
+public final class StringSplit {
+	
 	@RequiredArgsConstructor
-	public static final class StringPiece
-	{
+	public static final class StringPiece {
 		@Getter private final int startIndex;
 		@Getter private final int endIndex;
 		@Getter private final String value;
