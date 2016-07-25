@@ -58,7 +58,7 @@ final class TgmNewMessageCommandHandler implements TgmUpdateDispatchHandler {
 				return commandName.equalsIgnoreCase(fullCommandName);
 			} else {
 				final String pureCommandName = fullCommandName.substring(0, lastAtIndex);
-				final String botName = fullCommandName.substring(lastAtIndex);
+				final String botName = fullCommandName.substring(lastAtIndex + 1);
 				return filterBotName.equalsIgnoreCase(botName) && commandName.equalsIgnoreCase(pureCommandName);
 			}
 		}
