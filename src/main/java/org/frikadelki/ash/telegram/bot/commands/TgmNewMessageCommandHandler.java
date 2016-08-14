@@ -49,7 +49,7 @@ final class TgmNewMessageCommandHandler implements TgmUpdateDispatchHandler {
 		});
 	}
 
-	private final Lambda.FactoryCode1<Boolean, TgmMessageEntityBotCommand> commandNameFilterPredicate = new Lambda.FactoryCode1<Boolean, TgmMessageEntityBotCommand>() {
+	private final Lambda.Predicate1<TgmMessageEntityBotCommand> commandNameFilterPredicate = new Lambda.Predicate1<TgmMessageEntityBotCommand>() {
 		@Override
 		public Boolean produce(final TgmMessageEntityBotCommand command) {
 			final String fullCommandName = command.getCommandName();
