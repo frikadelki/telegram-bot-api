@@ -7,10 +7,14 @@
 package org.frikadelki.ash.telegram.runtime;
 
 import com.google.gson.*;
+import lombok.Builder;
 import lombok.NonNull;
 import org.frikadelki.ash.telegram.api.chat.TgmChat;
+import org.frikadelki.ash.telegram.api.keyboard.KeyboardRow;
 import org.frikadelki.ash.telegram.api.message.TgmMessageEntity;
 import org.frikadelki.ash.toolset.utils.GsonEnumFallbackTypeAdapter;
+
+import java.lang.reflect.Type;
 
 
 public final class TgmJsonIO {
@@ -23,6 +27,7 @@ public final class TgmJsonIO {
 		gson = new Builder()
 				.registerEnumWithFallback(TgmChat.Type.class, TgmChat.Type.UNKNOWN)
 				.registerEnumWithFallback(TgmMessageEntity.Type.class, TgmMessageEntity.Type.UNKNOWN)
+				.registerTypeAdapter(KeyboardRow.class, new KeyboardRow.KeyboardRowSerializer())
 				.build();
 	}
 
@@ -55,6 +60,12 @@ public final class TgmJsonIO {
 		private GsonBuilder builder = new GsonBuilder();
 		<T extends Enum<T>> Builder registerEnumWithFallback(@NonNull final Class<T> enumClass, final T fallbackValue) {
 			builder.registerTypeAdapter(enumClass, new GsonEnumFallbackTypeAdapter<>(enumClass, fallbackValue));
+			return this;
+		}
+
+		Builder registerTypeAdapter(Type type, Object typeAdapter)
+		{
+			builder.registerTypeAdapter(type, typeAdapter);
 			return this;
 		}
 
