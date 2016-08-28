@@ -25,7 +25,7 @@ public final class TgmUpdateDispatchCore {
 
 	public void dispatchUpdate(@NonNull final TgmUpdateDispatchContext context, @NonNull final TgmUpdate update) {
 		final Iterable<TgmUpdateDispatchHandler> matchingHandlers = StreamCompat.where(handlers, new Lambda.Predicate1<TgmUpdateDispatchHandler>() {
-			@Override public Boolean produce(final TgmUpdateDispatchHandler handler) {
+			@Override public boolean is(final TgmUpdateDispatchHandler handler) {
 				return handler.getFilter().isMatch(update);
 			}
 		});

@@ -60,6 +60,7 @@ public final class Lambda {
 		W produce(final T t, final K k);
 	}
 
-	public interface Predicate1<T> extends FactoryCode1<Boolean, T> {
+	public interface Predicate1<T> {
+		boolean is(T t);
 	}
 }

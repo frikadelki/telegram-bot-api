@@ -39,7 +39,7 @@ public final class StreamCompat {
 	public static <T> boolean has(@NonNull final Iterable<? extends T> source, @NonNull final T exactMatch) {
 		return where(source, new Lambda.Predicate1<T>() {
 			@Override
-			public Boolean produce(final T t) {
+			public boolean is(final T t) {
 				return (exactMatch == t);
 			}
 		}).iterator().hasNext();
@@ -131,7 +131,7 @@ public final class StreamCompat {
 			}
 			while (source.hasNext()) {
 				final T next = source.next();
-				if (where.produce(next)) {
+				if (where.is(next)) {
 					nextChecked = next;
 					break;
 				}
