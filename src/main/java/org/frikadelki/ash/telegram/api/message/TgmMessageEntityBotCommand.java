@@ -50,7 +50,7 @@ public final class TgmMessageEntityBotCommand {
 		}
 
 		final Pattern pattern = WHITE_SPACE_REGULAR_EXPRESSION.equals(delimiterRegex) ? WHITESPACE_PATTERN : Pattern.compile(delimiterRegex);
-		final StringSplit.StringPiece[] split = StringSplit.split(arguments, pattern);
+		final StringSplit.StringPiece[] split = StringSplit.splitOrEmpty(arguments, pattern);
 
 		final TgmCommandArgument[] result = new TgmCommandArgument[split.length];
 

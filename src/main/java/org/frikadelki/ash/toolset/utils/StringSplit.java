@@ -7,10 +7,10 @@ Created by GeneralGDA on 23-Jul-16.
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class StringSplit {
@@ -22,10 +22,10 @@ public final class StringSplit {
 		@Getter private final String value;
 	}
 
-	public static StringPiece[] split(@NonNull final String input, @NonNull final Pattern delimiter) {
+	public static StringPiece[] splitOrEmpty(@NonNull final String input, @NonNull final Pattern delimiter) {
 		int index = 0;
-		ArrayList<StringPiece> matchList = new ArrayList<>();
-		Matcher m = delimiter.matcher(input);
+		val matchList = new ArrayList<StringPiece>();
+		val m = delimiter.matcher(input);
 
 		// Add segments before each match found
 		while(m.find()) {
@@ -34,32 +34,33 @@ public final class StringSplit {
 				// at the beginning of the input char sequence.
 				continue;
 			}
-			String match = input.subSequence(index, m.start()).toString();
+			val match = input.subSequence(index, m.start()).toString();
 			matchList.add(new StringPiece(index, m.start(), match));
 			index = m.end();
 		}
 
 		// If no match was found, return this
 		if (index == 0) {
-			return new StringPiece[]{new StringPiece(0, input.length(), input)};
+			return new StringPiece[]{};
 		}
 
 		matchList.add(new StringPiece(index, input.length(), input.subSequence(index, input.length()).toString()));
 
-		for (Iterator<StringPiece> iterator = matchList.iterator(); iterator.hasNext();) {
-			final StringPiece next = iterator.next();
-			if ("".equals(next.getValue())) {
+		for (final Iterator<StringPiece> iterator = matchList.iterator(); iterator.hasNext();) {
+			val next = iterator.next();
+			val value = next.getValue();
+			if (null == value || "".equals(value.trim()) || next.getEndIndex() == next.getStartIndex()) {
 				iterator.remove();
 			}
 		}
 
 		// Construct result
 		int resultSize = matchList.size();
-		while (resultSize > 0 && "".equals(matchList.get(resultSize-1).getValue())) {
+		while (resultSize > 0 && "".equals(matchList.get(resultSize-1).getValue().trim())) {
 			resultSize--;
 		}
 
-		final StringPiece[] result = new StringPiece[resultSize];
+		val result = new StringPiece[resultSize];
 		return matchList.subList(0, resultSize).toArray(result);
 	}
 }
