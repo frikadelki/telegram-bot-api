@@ -59,4 +59,8 @@ public final class Lambda {
 	public interface FactoryCode2<W, T, K> {
 		W produce(final T t, final K k);
 	}
+
+	public interface Predicate1<T> {
+		boolean is(T t);
+	}
 }

@@ -61,9 +61,9 @@ public final class TgmMessage {
 		if( null == entities ) {
 			return Collections.emptyList();
 		}
-		return StreamCompat.where(entities, new Lambda.FactoryCode1<Boolean, TgmMessageEntity>() {
+		return StreamCompat.where(entities, new Lambda.Predicate1<TgmMessageEntity>() {
 			@Override
-			public Boolean produce(TgmMessageEntity tgmMessageEntity) {
+			public boolean is(TgmMessageEntity tgmMessageEntity) {
 				return (type == null) || tgmMessageEntity.is(type);
 			}
 		});
