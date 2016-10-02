@@ -51,30 +51,25 @@ public final class TgmMessageEntityBotCommand {
 		}
 
 		final Pattern pattern = WHITE_SPACE_REGULAR_EXPRESSION.equals(delimiterRegex) ? WHITESPACE_PATTERN : Pattern.compile(delimiterRegex);
-		final StringSplit.StringPiece[] split = StringSplit.split(arguments, pattern);
+		final StringSplit.StringPiece[] split = StringSplit.splitOrEmpty(arguments, pattern);
 
-		final ArrayList<TgmCommandArgument> result = new ArrayList<>(split.length);
+		final TgmCommandArgument[] result = new TgmCommandArgument[split.length];
 
 		outer: for (int i = 0; i < split.length; i++) {
 			final StringSplit.StringPiece argumentToken = split[i];
-
-			// filtering bogus args
-			if (argumentToken.getStartIndex() == argumentToken.getEndIndex()) {
-				continue;
-			}
 
 			final Iterable<TgmMessageEntity> entities = message.getEntities(null);
 			for (final TgmMessageEntity attachment : entities) {
 				if (argumentsStart + argumentToken.getStartIndex() == attachment.getOffset()
 						&& argumentsStart + argumentToken.getEndIndex() == attachment.getOffset() + attachment.getLength()) {
-					result.add(new TgmCommandArgument(attachment, argumentToken.getValue()));
+					result[i] = new TgmCommandArgument(attachment, argumentToken.getValue());
 					continue outer;
 				}
 			}
 
-			result.add(new TgmCommandArgument(null, argumentToken.getValue()));
+			result[i] = new TgmCommandArgument(null, argumentToken.getValue());
 		}
 
-		return result.toArray(new TgmCommandArgument[result.size()]);
+		return result;
 	}
 }
