@@ -20,7 +20,8 @@ public final class TgmReplyKeyboardMarkup {
 	/**
 	 * Required. Array of button rows, each represented by an Array of KeyboardButton objects
 	 */
-	@Singular("row") @Setter @NonNull private List<List<TgmKeyboardButton>> keyboard;
+	@Singular("row")
+	@NonNull private final List<List<TgmKeyboardButton>> keyboard;
 
 	/**
 	 * Optional. Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller
@@ -28,7 +29,7 @@ public final class TgmReplyKeyboardMarkup {
 	 * same height as the app's standard keyboard.
 	 */
 	@SerializedName("resize_keyboard")
-	@Setter private Boolean resizeKeyboard = null;
+	private Boolean resizeKeyboard = null;
 
 	/**
 	 * Optional. Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available,
@@ -36,7 +37,7 @@ public final class TgmReplyKeyboardMarkup {
 	 * button in the input field to see the custom keyboard again. Defaults to false.
 	 */
 	@SerializedName("one_time_keyboard")
-	@Setter private Boolean oneTimeKeyboard = null;
+	private Boolean oneTimeKeyboard = null;
 
 	/**
 	 * Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are
@@ -46,9 +47,5 @@ public final class TgmReplyKeyboardMarkup {
 	 * Example: A user requests to change the bot‘s language, bot replies to th request with a keyboard to select the
 	 * new language. Other users in the group don’t see the keyboard.
 	 */
-	@Setter private Boolean selective = null;
-
-	public void addRow(@NonNull List<TgmKeyboardButton> row) {
-		keyboard.add(row);
-	}
+	private Boolean selective = null;
 }

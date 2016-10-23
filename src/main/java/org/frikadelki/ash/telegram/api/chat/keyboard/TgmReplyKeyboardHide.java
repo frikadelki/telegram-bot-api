@@ -19,7 +19,7 @@ public final class TgmReplyKeyboardHide {
 	 * Required. Requests clients to hide the custom keyboard
 	 */
 	@SerializedName("hide_keyboard")
-	@Setter @NonNull private Boolean hideKeyboard;
+	@NonNull private final Boolean hideKeyboard;
 
 	/**
 	 * Optional. Use this parameter if you want to hide keyboard for specific users only. Targets: 1) users that are
@@ -29,5 +29,5 @@ public final class TgmReplyKeyboardHide {
 	 * Example: A user votes in a poll, bot returns confirmation message in reply to the vote and hides keyboard for
 	 * that user, while still showing the keyboard with poll options to users who haven't voted yet.
 	 */
-	@Setter private Boolean selective = null;
+	private Boolean selective = null;
 }
