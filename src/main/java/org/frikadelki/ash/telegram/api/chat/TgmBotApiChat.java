@@ -16,7 +16,7 @@ public interface TgmBotApiChat {
 
 	AshResultGist sendMessage(@NonNull final SendMessageParams params);
 
-	@Builder
+	@Builder(builderClassName = "Builder")
 	final class SendMessageParams {
 		public static String PARSE_MODE_MARKDOWN = "Markdown";
 		public static String PARSE_MODE_HTML = "HTML";
