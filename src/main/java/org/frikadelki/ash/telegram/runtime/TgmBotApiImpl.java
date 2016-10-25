@@ -13,7 +13,7 @@ import org.frikadelki.ash.telegram.api.TgmBotApi;
 import org.frikadelki.ash.telegram.api.base.TgmUpdate;
 import org.frikadelki.ash.telegram.api.chat.TgmBotApiChat;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
-import org.frikadelki.ash.telegram.api.misc.TgmBotApiMisc;
+import org.frikadelki.ash.telegram.api.TgmBotApiUpdates;
 import org.frikadelki.ash.toolset.result.AshResult;
 import org.frikadelki.ash.toolset.result.AshResultGist;
 
@@ -21,6 +21,11 @@ import org.frikadelki.ash.toolset.result.AshResultGist;
 @RequiredArgsConstructor
 final class TgmBotApiImpl implements TgmBotApi {
 	@NonNull private final TgmBotRuntime runtime;
+
+	@Override
+	public AshResult<TgmUser> getMe() {
+		return runtime.query("getMe", null, TgmUser.class);
+	}
 
 	@Getter
 	private final TgmBotApiChat chatApi = new TgmBotApiChat() {
@@ -31,12 +36,7 @@ final class TgmBotApiImpl implements TgmBotApi {
 	};
 
 	@Getter
-	private final TgmBotApiMisc miscApi = new TgmBotApiMisc() {
-		@Override
-		public AshResult<TgmUser> getMe() {
-			return runtime.query("getMe", null, TgmUser.class);
-		}
-
+	private final TgmBotApiUpdates updatesApi = new TgmBotApiUpdates() {
 		@Override
 		public AshResultGist setWebhook(final WebhookParams params) {
 			return runtime.query("setWebhook", params, Void.class);

@@ -38,7 +38,7 @@ public final class TgmBot {
 	}
 	
 	public void warmup() {
-		val getMeResult = getApi().getMiscApi().getMe();
+		val getMeResult = getApi().getMe();
 		
 		TgmUser botInfo = null;
 		if (
