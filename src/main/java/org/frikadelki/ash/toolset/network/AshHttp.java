@@ -13,6 +13,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class AshHttp {
 
+	@UtilityClass
 	public static final class Header {
 		public static final String CONTENT_TYPE = "Content-Type";
 	}
