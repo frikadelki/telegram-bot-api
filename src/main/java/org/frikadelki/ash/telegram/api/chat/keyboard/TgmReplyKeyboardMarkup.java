@@ -12,7 +12,7 @@ import lombok.*;
 import java.util.List;
 
 
-@Builder
+@Builder(builderClassName = "Builder")
 @AllArgsConstructor
 @RequiredArgsConstructor
 public final class TgmReplyKeyboardMarkup {

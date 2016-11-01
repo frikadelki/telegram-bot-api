@@ -8,7 +8,7 @@
 
 	<groupId>org.frikadelki.ash</groupId>
 	<artifactId>telegram-bot-api-core</artifactId>
-	<version>0.5</version>
+	<version>0.6</version>
 
 	<properties>
 		<maven.compiler.source>1.7</maven.compiler.source>
@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.8</version>
+			<version>1.16.10</version>
 			<scope>provided</scope>
 		</dependency>
 

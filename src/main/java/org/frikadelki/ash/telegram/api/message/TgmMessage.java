@@ -7,8 +7,7 @@
 package org.frikadelki.ash.telegram.api.message;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 import org.frikadelki.ash.telegram.api.base.TgmEntity;
 import org.frikadelki.ash.telegram.api.chat.TgmChat;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
@@ -97,6 +96,52 @@ public final class TgmMessage {
 	@SerializedName("left_chat_member")
 	@Getter private TgmUser leftChatMember = null;
 
+	/**
+	 * Optional. Message is a shared contact, information about the contact
+	 */
+	@Getter private Contact contact = null;
+
+	/**
+	 * This object represents a phone contact.
+	 */
+	@NoArgsConstructor(access = AccessLevel.PRIVATE)
+	public static class Contact {
+		/**
+		 * Contact's phone number
+		 */
+		@SerializedName("phone_number")
+		@Getter private String phoneNumber;
+
+		/**
+		 * Contact's first name
+		 */
+		@SerializedName("first_name")
+		@Getter private String firstName;
+
+		/**
+		 * Optional. Contact's last name
+		 */
+		@SerializedName("last_name")
+		@Getter private String lastName;
+
+		/**
+		 * Optional. Contact's user identifier in Telegram
+		 */
+		@SerializedName("user_id")
+		@Getter private long userId = TgmEntity.INVALID_ID;
+	}
+
+	/**
+	 * Optional. Message is a shared location, information about the location
+	 */
+	@Getter private Location location = null;
+
+	@NoArgsConstructor(access = AccessLevel.PRIVATE)
+	public static class Location {
+		@Getter private double latitude = Double.NaN;
+		@Getter private double longitude = Double.NaN;
+	}
+
 	/*
 	TODO
 
@@ -113,8 +158,6 @@ public final class TgmMessage {
 	 video	Video	Optional. Message is a video, information about the video
 	 voice	Voice	Optional. Message is a voice message, information about the file
 	 caption	String	Optional. Caption for the document, photo or video, 0-200 characters
-	 contact	Contact	Optional. Message is a shared contact, information about the contact
-	 location	Location	Optional. Message is a shared location, information about the location
 	 venue	Venue	Optional. Message is a venue, information about the venue
 
 	 new_chat_title	String	Optional. A chat title was changed to this value
