@@ -47,7 +47,7 @@ public final class TgmBot {
 		) {
 			commandsDispatch.setFilterBotName(botInfo.getUsername());
 		} else {
-			log.severe(GET_ME_WAS_NOT_SUCCESSFUL);
+			LOG.severe(GET_ME_WAS_NOT_SUCCESSFUL);
 			throw new IllegalStateException(GET_ME_WAS_NOT_SUCCESSFUL);
 		}
 	}

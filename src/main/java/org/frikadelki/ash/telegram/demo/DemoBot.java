@@ -34,16 +34,9 @@ import java.util.logging.SimpleFormatter;
 public final class DemoBot {
 	public static class Main {
 		public static void main(final String[] args) {
-			val consoleHandler = new ConsoleHandler();
-			consoleHandler.setLevel(Level.ALL);
-			consoleHandler.setFormatter(new SimpleFormatter());
-
-			val logger = Logger.getLogger("org.frikadelki.ash.telegram.demo");
-			logger.setLevel(Level.ALL);
-			logger.addHandler(consoleHandler);
-
 			val botToken = "YOUR BOT TOKEN";
 			val demoBot = new DemoBot(botToken);
+			demoBot.enableConsoleLogging();
 			demoBot.run();
 
 			// access it via
@@ -53,9 +46,19 @@ public final class DemoBot {
 
 	private final TgmBot tgmBot;
 
-	private DemoBot(@NonNull final String botToken) {
+	public DemoBot(@NonNull final String botToken) {
 		tgmBot = new TgmBot(botToken, new TgmQueryIODefault());
 		setupBasicCommands();
+	}
+
+	public void enableConsoleLogging() {
+		val consoleHandler = new ConsoleHandler();
+		consoleHandler.setLevel(Level.ALL);
+		consoleHandler.setFormatter(new SimpleFormatter());
+
+		val logger = Logger.getLogger(getClass().getPackage().getName());
+		logger.setLevel(Level.ALL);
+		logger.addHandler(consoleHandler);
 	}
 
 	private void setupBasicCommands() {
@@ -63,7 +66,6 @@ public final class DemoBot {
 			@Override
 			public void dispatchCommand(final TgmUpdateDispatchContext context, final TgmUpdate update, final TgmMessageEntityBotCommand command) {
 				val args = command.getArguments();
-
 				if (0 != args.length && "secret".equalsIgnoreCase(args[0].getValue())) {
 					// deeply linked user
 					greetSecret(update);
@@ -75,7 +77,7 @@ public final class DemoBot {
 		});
 	}
 
-	private void  sayWelcome(final long chatId, final String text) {
+	private void sayWelcome(final long chatId, final String text) {
 		tgmBot.getApi().getChatApi().sendMessage(TgmBotApiChat.SendMessageParams
 				.builder()
 				.chatId(chatId)
@@ -86,25 +88,24 @@ public final class DemoBot {
 	public void run() {
 		// One-time setup to initialize some internal structures that
 		// require network interactions with Telegram API.
-		log.fine("[warmup-started]");
+		LOG.fine("[warmup-started]");
 		tgmBot.warmup();
-		log.fine("[warmup-completed]");
+		LOG.fine("[warmup-completed]");
 
 		long offset = -1L;
 		val timeout = 10L;
 		while (true) {
-			log.fine("[updates-start-poll]");
+			LOG.fine("[updates-start-poll]");
 			val pollParams = new TgmBotApiUpdates.UpdatesParams(offset + 1, null, timeout);
 			val updatesResult = tgmBot.getApi().getUpdatesApi().getUpdates(pollParams);
-
 			if (updatesResult.isSuccess()) {
 				for (val update : updatesResult.getData()) {
-					log.fine("[update-message]: " + update.getNewMessage().getText());
+					LOG.fine("[update-message]: " + update.getNewMessage().getText());
 					offset = Math.max(update.getUpdateId(), offset);
 					tgmBot.dispatchUpdate(new TgmUpdateDispatchContextNull(), update);
 				}
 			} else {
-				log.severe("[updates-failed]: " + updatesResult.getError().toString());
+				LOG.severe("[updates-failed]: " + updatesResult.getError().toString());
 			}
 		}
 	}
