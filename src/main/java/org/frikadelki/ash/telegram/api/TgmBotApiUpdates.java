@@ -9,7 +9,7 @@ package org.frikadelki.ash.telegram.api;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.frikadelki.ash.telegram.api.base.TgmUpdate;
+import org.frikadelki.ash.telegram.api.update.TgmUpdate;
 import org.frikadelki.ash.toolset.result.AshResult;
 import org.frikadelki.ash.toolset.result.AshResultGist;
 

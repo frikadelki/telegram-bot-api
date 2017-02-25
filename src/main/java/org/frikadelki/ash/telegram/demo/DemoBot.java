@@ -10,17 +10,16 @@ import lombok.NonNull;
 import lombok.extern.java.Log;
 import lombok.val;
 import org.frikadelki.ash.telegram.api.TgmBotApiUpdates;
-import org.frikadelki.ash.telegram.api.base.TgmUpdate;
 import org.frikadelki.ash.telegram.api.chat.TgmBotApiChat;
 import org.frikadelki.ash.telegram.api.chat.keyboard.TgmKeyboardButton;
 import org.frikadelki.ash.telegram.api.chat.keyboard.TgmReplyKeyboardMarkup;
+import org.frikadelki.ash.telegram.api.message.TgmMessage;
 import org.frikadelki.ash.telegram.api.message.TgmMessageEntityBotCommand;
+import org.frikadelki.ash.telegram.api.update.*;
 import org.frikadelki.ash.telegram.bot.TgmBot;
+import org.frikadelki.ash.telegram.bot.commands.TgmCommand;
 import org.frikadelki.ash.telegram.bot.commands.TgmCommandBody;
-import org.frikadelki.ash.telegram.bot.filters.TgmNewMessageFilters;
 import org.frikadelki.ash.telegram.runtime.TgmQueryIODefault;
-import org.frikadelki.ash.telegram.runtime.dispatch.TgmUpdateDispatchContext;
-import org.frikadelki.ash.telegram.runtime.dispatch.TgmUpdateDispatchContextNull;
 import org.frikadelki.ash.toolset.utils.Lambda;
 
 import java.util.Collections;
@@ -62,19 +61,23 @@ public final class DemoBot {
 	}
 
 	private void setupBasicCommands() {
-		tgmBot.addNewMessageCommandHandler("/start", TgmNewMessageFilters.HAS_SENDER, new TgmCommandBody() {
-			@Override
-			public void dispatchCommand(final TgmUpdateDispatchContext context, final TgmUpdate update, final TgmMessageEntityBotCommand command) {
-				val args = command.getArguments();
-				if (0 != args.length && "secret".equalsIgnoreCase(args[0].getValue())) {
-					// deeply linked user
-					greetSecret(update);
-				} else {
-					// a total stranger
-					greetStranger(update);
-				}
-			}
-		});
+		tgmBot.getCommandsRegistry().addCommand(new TgmCommand(
+				"/start", "Starts the whole thing.",
+				TgmUpdateFilters.NewMessage.HAS_SENDER,
+				new TgmCommandBody() {
+					@Override
+					public void dispatchCommand(final TgmUpdateDispatchContext context, final TgmUpdate update,
+												final TgmMessageEntityBotCommand command) {
+						val args = command.getArguments();
+						if (0 != args.length && "secret".equalsIgnoreCase(args[0].getValue())) {
+							// deeply linked user
+							greetSecret(command.getMessage());
+						} else {
+							// a total stranger
+							greetStranger(command.getMessage());
+						}
+					}
+				}));
 	}
 
 	private void sayWelcome(final long chatId, final String text) {
@@ -110,12 +113,12 @@ public final class DemoBot {
 		}
 	}
 
-	private void greetStranger(final TgmUpdate update) {
-		sendMessage(update.getNewMessage().getChat().getId(), "Hello stranger. Do you know the secret?", null);
+	private void greetStranger(final TgmMessage message) {
+		sendMessage(message.getChat().getId(), "Hello stranger. Do you know the secret?", null);
 	}
 
-	private void greetSecret(final TgmUpdate update) {
-		sendMessage(update.getNewMessage().getChat().getId(), "Welcome friend ...", new Lambda.Code1<TgmBotApiChat.SendMessageParams.Builder>() {
+	private void greetSecret(final TgmMessage message) {
+		sendMessage(message.getChat().getId(), "Welcome friend ...", new Lambda.Code1<TgmBotApiChat.SendMessageParams.Builder>() {
 			@Override
 			public void invoke(final TgmBotApiChat.SendMessageParams.Builder params) {
 				val startAgainButton = new TgmKeyboardButton("Repeat magic words -> [ /start secret ]");

@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.frikadelki.ash.telegram.api.TgmBotApi;
-import org.frikadelki.ash.telegram.api.base.TgmUpdate;
+import org.frikadelki.ash.telegram.api.update.TgmUpdate;
 import org.frikadelki.ash.telegram.api.chat.TgmBotApiChat;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
 import org.frikadelki.ash.telegram.api.TgmBotApiUpdates;

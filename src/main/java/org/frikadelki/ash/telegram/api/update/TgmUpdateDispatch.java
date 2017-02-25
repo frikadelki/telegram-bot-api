@@ -4,19 +4,22 @@
  * Created by ein on 2016/7/22
  */
 
-package org.frikadelki.ash.telegram.runtime.dispatch;
+package org.frikadelki.ash.telegram.api.update;
 
 import com.google.gson.JsonParseException;
 import lombok.NonNull;
-import org.frikadelki.ash.telegram.api.base.TgmUpdate;
+import lombok.extern.java.Log;
 import org.frikadelki.ash.telegram.runtime.TgmJsonIO;
 
+import java.util.logging.Level;
 
-public final class TgmUpdateDispatchFront {
-	private final TgmUpdateDispatchCore dispatchCore = new TgmUpdateDispatchCore();
 
-	public void addHandler(@NonNull final TgmUpdateDispatchHandler handler) {
-		dispatchCore.addHandler(handler);
+@Log
+public final class TgmUpdateDispatch {
+	private final TgmUpdateDispatchRelay rootRelay = new TgmUpdateDispatchRelay();
+
+	public void addHandler(@NonNull final TgmUpdateHandler handler) {
+		rootRelay.addHandler(handler);
 	}
 
 	public void dispatchRawUpdate(@NonNull final TgmUpdateDispatchContext dispatchContext, @NonNull final String updateJsonBodyString) {
@@ -25,14 +28,14 @@ public final class TgmUpdateDispatchFront {
 			if (update == null) {
 				return;
 			}
-			dispatchCore.dispatchUpdate(dispatchContext, update);
+			dispatchUpdate(dispatchContext, update);
 		}
 		catch (final JsonParseException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "Failed to parse json update body string.", e);
 		}
 	}
 
 	public void dispatchUpdate(@NonNull final TgmUpdateDispatchContext context, @NonNull final TgmUpdate update) {
-		dispatchCore.dispatchUpdate(context, update);
+		rootRelay.dispatchUpdate(context, update);
 	}
 }

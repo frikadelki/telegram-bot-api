@@ -4,13 +4,16 @@
  * Created by ein on 2016/7/18
  */
 
-package org.frikadelki.ash.telegram.api.base;
+package org.frikadelki.ash.telegram.api.update;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Builder;
 import lombok.Getter;
+import org.frikadelki.ash.telegram.api.base.TgmEntity;
 import org.frikadelki.ash.telegram.api.message.TgmMessage;
 
 
+@Builder(builderClassName = "Builder")
 public final class TgmUpdate {
 	@SerializedName("update_id")
 	@Getter private long updateId = TgmEntity.INVALID_ID;
@@ -33,5 +36,12 @@ public final class TgmUpdate {
 
 	public boolean isEditedMessage() {
 		return (editedMessage != null);
+	}
+
+	/**
+	 * This is to provide lombok builder with some specific defaults.
+	 */
+	public static class Builder {
+		private long updateId = TgmEntity.INVALID_ID;
 	}
 }

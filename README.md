@@ -7,11 +7,10 @@ Contains:
 - - model classes: update, message, chat, keyboards, user, etc.
 - - api signatures for most of the main methods: set webhook, fetch updates, send message, etc.
 - - *(still some entities to implement to be done)*
-- basic updates dispatch `org.frikadelki.ash.telegram.runtime.dispatch.TgmUpdateDispatchFront`
-- filtered updates dispatch with built-in commands handling
-- - `org.frikadelki.ash.telegram.bot.TgmBot#addGenericHandler`
-- - `org.frikadelki.ash.telegram.bot.TgmBot#addNewMessageCommandHandler`
-- - *(a bit too complex inside, needs simplification)*
+- manual updates dispatch `org.frikadelki.ash.telegram.api.update.TgmUpdateDispatch`
+- Simple bot setup `org.frikadelki.ash.telegram.bot.TgmBot`
+- - Generic updates handling `#addUpdateHandler`
+- - Commands dispatch `#getCommandsRegistry().addCommand()`
 
 
 ### Short Manual ###
@@ -32,20 +31,23 @@ tgmBot = new TgmBot(botToken, new TgmQueryIODefault());
 You can use simple built-in commands dispatcher.
  
 ```
-tgmBot.addNewMessageCommandHandler("/start", TgmNewMessageFilters.HAS_SENDER, new TgmCommandBody() {
-			@Override
-			public void dispatchCommand(final TgmUpdateDispatchContext context, final TgmUpdate update, final TgmMessageEntityBotCommand command) {
-				val args = command.getArguments();
-
-				if (0 != args.length && "secret".equalsIgnoreCase(args[0].getValue())) {
-					// deeply linked user
-					sayWelcome(update.getNewMessage().getChat().getId(), "Hello, it seems we have met somewhere before.");
-				} else {
-					// a total stranger
-					sayWelcome(update.getNewMessage().getChat().getId(), "Hello stranger.");
-				}
-			}
-		});
+tgmBot.getCommandsRegistry().addCommand(new TgmCommand(
+				"/start", "Starts the whole thing.",
+				TgmUpdateFilters.NewMessage.HAS_SENDER,
+				new TgmCommandBody() {
+					@Override
+					public void dispatchCommand(final TgmUpdateDispatchContext context, final TgmUpdate update,
+												final TgmMessageEntityBotCommand command) {
+						val args = command.getArguments();
+						if (0 != args.length && "secret".equalsIgnoreCase(args[0].getValue())) {
+							// deeply linked user
+							greetSecret(command.getMessage());
+						} else {
+							// a total stranger
+							greetStranger(command.getMessage());
+						}
+					}
+				}));
 ```
 
 ##### Send Messages #####

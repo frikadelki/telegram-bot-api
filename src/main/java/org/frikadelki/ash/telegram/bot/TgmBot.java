@@ -8,16 +8,16 @@ package org.frikadelki.ash.telegram.bot;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.val;
 import lombok.extern.java.Log;
-
+import lombok.val;
 import org.frikadelki.ash.telegram.api.TgmBotApi;
-import org.frikadelki.ash.telegram.api.base.TgmUpdate;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
-import org.frikadelki.ash.telegram.bot.commands.TgmCommandBody;
+import org.frikadelki.ash.telegram.api.update.TgmUpdate;
+import org.frikadelki.ash.telegram.api.update.TgmUpdateDispatch;
+import org.frikadelki.ash.telegram.api.update.TgmUpdateDispatchContext;
+import org.frikadelki.ash.telegram.api.update.TgmUpdateHandler;
 import org.frikadelki.ash.telegram.bot.commands.TgmCommandsDispatch;
-import org.frikadelki.ash.telegram.runtime.dispatch.*;
-
+import org.frikadelki.ash.telegram.bot.commands.TgmCommandsRegistry;
 import org.frikadelki.ash.telegram.runtime.TgmBotApiFactory;
 import org.frikadelki.ash.telegram.runtime.TgmBotRuntime;
 import org.frikadelki.ash.telegram.runtime.TgmQueryIO;
@@ -29,8 +29,12 @@ public final class TgmBot {
 	@Getter private final TgmBotRuntime runtime;
 	@Getter private final TgmBotApi api;
 
-	private final TgmUpdateDispatchFront updateDispatcher = new TgmUpdateDispatchFront();
-	private final TgmCommandsDispatch commandsDispatch = new TgmCommandsDispatch(updateDispatcher);
+	private final TgmUpdateDispatch updateDispatcher = new TgmUpdateDispatch();
+	private final TgmCommandsDispatch commandsDispatch = new TgmCommandsDispatch();
+
+	{
+		updateDispatcher.addHandler(commandsDispatch);
+	}
 
 	public TgmBot(@NonNull final String botToken, @NonNull final TgmQueryIO queryIO) {
 		runtime = new TgmBotRuntime(botToken, queryIO);
@@ -52,12 +56,12 @@ public final class TgmBot {
 		}
 	}
 
-	public void addNewMessageCommandHandler(@NonNull final String commandName, @NonNull final TgmUpdateFilter baseFilter, @NonNull final TgmCommandBody commandBody) {
-		commandsDispatch.addNewMessageCommand(commandName, baseFilter, commandBody);
+	public void addUpdateHandler(@NonNull final TgmUpdateHandler handler) {
+		updateDispatcher.addHandler(handler);
 	}
 
-	public void addGenericHandler(@NonNull final TgmUpdateDispatchHandler handler) {
-		updateDispatcher.addHandler(handler);
+	public TgmCommandsRegistry getCommandsRegistry() {
+		return commandsDispatch;
 	}
 
 	public void dispatchRawUpdate(@NonNull final TgmUpdateDispatchContext dispatchContext, @NonNull final String updateJsonBodyString) {

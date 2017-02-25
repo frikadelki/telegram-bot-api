@@ -4,7 +4,7 @@
  * Created by ein on 2016/10/25
  */
 
-package org.frikadelki.ash.telegram.runtime.dispatch;
+package org.frikadelki.ash.telegram.api.update;
 
 
 public final class TgmUpdateDispatchContextNull implements TgmUpdateDispatchContext {

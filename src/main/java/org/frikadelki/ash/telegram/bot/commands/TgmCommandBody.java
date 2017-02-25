@@ -6,9 +6,9 @@
 
 package org.frikadelki.ash.telegram.bot.commands;
 
-import org.frikadelki.ash.telegram.api.base.TgmUpdate;
 import org.frikadelki.ash.telegram.api.message.TgmMessageEntityBotCommand;
-import org.frikadelki.ash.telegram.runtime.dispatch.TgmUpdateDispatchContext;
+import org.frikadelki.ash.telegram.api.update.TgmUpdate;
+import org.frikadelki.ash.telegram.api.update.TgmUpdateDispatchContext;
 
 
 public interface TgmCommandBody {

@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 
+@Builder(builderClassName = "Builder")
 public final class TgmMessage {
 
 	/** Required. */
@@ -172,4 +173,11 @@ public final class TgmMessage {
 
 	 pinned_message	Message	Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
 	 */
+
+	/**
+	 * This is to provide lombok builder with some specific defaults.
+	 */
+	public static class Builder {
+		private long messageId = TgmEntity.INVALID_ID;
+	}
 }
