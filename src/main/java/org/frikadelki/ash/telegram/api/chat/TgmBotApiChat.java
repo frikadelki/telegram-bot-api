@@ -22,16 +22,16 @@ public interface TgmBotApiChat {
 		public static String PARSE_MODE_HTML = "HTML";
 
 		/**
-		 * Required
+		 * Required.
 		 * Unique identifier for the target chat or username of the
-		 * target channel (in the format @channelusername)
+		 * target channel (in the format @channelusername).
 		 */
 		@SerializedName("chat_id")
 		@NonNull private final Long chatId;
 
 		/**
-		 * Required
-		 * Text of the message to be sent
+		 * Required.
+		 * Text of the message to be sent.
 		 */
 		@NonNull private final String text;
 
@@ -67,5 +67,4 @@ public interface TgmBotApiChat {
 		@SerializedName("reply_markup")
 		private final Object replyMarkup;
 	}
-
 }

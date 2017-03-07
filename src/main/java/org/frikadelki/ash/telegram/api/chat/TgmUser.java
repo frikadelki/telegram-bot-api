@@ -12,19 +12,27 @@ import org.frikadelki.ash.telegram.api.base.TgmEntity;
 
 
 public final class TgmUser {
+	/**
+	 * Unique identifier for this user or bot
+	 */
 	@Getter private long id = TgmEntity.INVALID_ID;
 
+	/**
+	 * User‘s or bot’s first name.
+	 */
 	@SerializedName("first_name")
 	@Getter private String firstName;
 
 	/**
-	 * Optional. User‘s or bot’s last name
+	 * Optional.
+	 * User‘s or bot’s last name.
 	 */
 	@SerializedName("last_name")
 	@Getter private String lastName;
 
 	/**
-	 * Optional. User‘s or bot’s username
+	 * Optional.
+	 * User‘s or bot’s username.
 	 */
 	@Getter private String username;
 }

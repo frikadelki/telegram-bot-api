@@ -14,8 +14,6 @@ import org.frikadelki.ash.telegram.api.update.TgmUpdateFilter;
 @EqualsAndHashCode(of = {"name"})
 public final class TgmCommand {
 	@Getter @NonNull private final String name;
-	@Getter @NonNull private final String description;
-
 	@Getter(AccessLevel.PACKAGE) @NonNull private final TgmUpdateFilter dispatchFilter;
 	@Getter(AccessLevel.PACKAGE) @NonNull private final TgmCommandBody commandBody;
 }

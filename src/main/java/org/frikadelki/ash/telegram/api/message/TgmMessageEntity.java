@@ -7,12 +7,13 @@
 package org.frikadelki.ash.telegram.api.message;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
 import org.frikadelki.ash.toolset.utils.AshAssert;
 
 
+@AllArgsConstructor(access = AccessLevel.PACKAGE) // for the above builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE) // for GSON
 public final class TgmMessageEntity {
 	public enum Type {
 		@SerializedName("mention")		MENTION,		// @username
@@ -31,31 +32,34 @@ public final class TgmMessageEntity {
 	}
 
 	/**
-	 *Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text),
+	 * Required.
+	 * Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text),
 	 * italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs),
 	 * text_mention (for users without usernames).
 	 */
-	private Type type = null;
+	private Type type;
 
 	/**
+	 * Required.
 	 * Offset in UTF-16 code units to the start of the entity.
 	 */
-	@Getter private int offset = 0;
+	@Getter private int offset;
 
 	/**
+	 * Required.
 	 * Length of the entity in UTF-16 code units.
 	 */
-	@Getter private int length = 0;
+	@Getter private int length;
 
 	/**
 	 * Optional. For “text_link” only, url that will be opened after user taps on the text.
 	 */
-	private String url = null;
+	private String url;
 
 	/**
 	 * Optional. For “text_mention” only, the mentioned user.
 	 */
-	private TgmUser user = null;
+	private TgmUser user;
 
 	public boolean is(@NonNull final Type type) {
 		return (this.type == type);

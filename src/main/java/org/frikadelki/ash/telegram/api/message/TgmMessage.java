@@ -18,48 +18,62 @@ import org.frikadelki.ash.toolset.utils.collections.CollectionsConvert;
 import java.util.Collections;
 import java.util.List;
 
-
-@Builder(builderClassName = "Builder")
+@Builder(builderClassName = "Builder") // for unit tests
+@AllArgsConstructor(access = AccessLevel.PACKAGE) // for the above builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE) // for GSON
 public final class TgmMessage {
-
-	/** Required. */
+	/**
+	 * Required.
+	 */
 	@SerializedName("message_id")
 	@Getter private long messageId = TgmEntity.INVALID_ID;
 
-	/** Required. Date the message was sent in Unix time. */
-	@Getter private long date = 0;
-
-	/** Required. Conversation the message belongs to. */
-	@Getter private TgmChat chat = null;
-
-	/** Optional. Sender, can be empty for messages sent to channels. */
-	@Getter private TgmUser from = null;
+	/**
+	 * Required.
+	 * Date the message was sent in Unix time.
+	 */
+	@Getter private long date;
 
 	/**
-	 * Optional. For replies, the original message.
+	 * Required.
+	 * Conversation the message belongs to.
+	 */
+	@Getter private TgmChat chat;
+
+	/**
+	 *  Optional.
+	 *  Sender, can be empty for messages sent to channels.
+	 */
+	@Getter private TgmUser from;
+
+	/**
+	 * Optional.
+	 * For replies, the original message.
 	 * Note that the Message object in this field will not contain further
 	 * reply_to_message fields even if it itself is a reply.
 	 */
 	@SerializedName("reply_to_message")
-	@Getter private TgmMessage replyToMessage = null;
+	@Getter private TgmMessage replyToMessage;
 
 	/**
-	 * Optional. For text messages, the actual text of the message, 0-4096 characters.
+	 * Optional.
+	 * For text messages, the actual text of the message, 0-4096 characters.
 	 */
-	@Getter private String text = null;
+	@Getter private String text;
 
 	/**
-	 * Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
+	 * Optional.
+	 * For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
 	 */
-	private List<TgmMessageEntity> entities = null;
-	private List<TgmMessageEntityBotCommand> entitiesCommands = null;
+	private List<TgmMessageEntity> entities;
+	private List<TgmMessageEntityBotCommand> entitiesCommands;  // commands wrappers cache
 
 	/**
 	 * @param type type fo entities to return, passing null will return all entities
 	 * @return iterable of entities matching given type
 	 */
 	public Iterable<TgmMessageEntity> getEntities(final TgmMessageEntity.Type type) {
-		if( null == entities ) {
+		if (null == entities) {
 			return Collections.emptyList();
 		}
 		return StreamCompat.where(entities, new Lambda.Predicate1<TgmMessageEntity>() {
@@ -71,7 +85,7 @@ public final class TgmMessage {
 	}
 
 	public Iterable<TgmMessageEntityBotCommand> getEntitiesCommands() {
-		if( entitiesCommands == null ) {
+		if (entitiesCommands == null) {
 			entitiesCommands = CollectionsConvert.listFromIterable(StreamCompat.select(getEntities(TgmMessageEntity.Type.BOT_COMMAND), new Lambda.FactoryCode1<TgmMessageEntityBotCommand, TgmMessageEntity>() {
 				@Override
 				public TgmMessageEntityBotCommand produce(final TgmMessageEntity tgmMessageEntity) {
@@ -87,21 +101,24 @@ public final class TgmMessage {
 	}
 
 	/**
-	 * Optional. A new member was added to the group, information about them (this member may be the bot itself)
+	 * Optional.
+	 * A new member was added to the group, information about them (this member may be the bot itself).
 	 */
 	@SerializedName("new_chat_member")
-	@Getter private TgmUser newChatMember = null;
+	@Getter private TgmUser newChatMember;
 
 	/**
-	 * Optional. A member was removed from the group, information about them (this member may be the bot itself)
+	 * Optional.
+	 * A member was removed from the group, information about them (this member may be the bot itself).
 	 */
 	@SerializedName("left_chat_member")
-	@Getter private TgmUser leftChatMember = null;
+	@Getter private TgmUser leftChatMember;
 
 	/**
-	 * Optional. Message is a shared contact, information about the contact
+	 * Optional.
+	 * Message is a shared contact, information about the contact.
 	 */
-	@Getter private Contact contact = null;
+	@Getter private Contact contact;
 
 	/**
 	 * This object represents a phone contact.
@@ -109,32 +126,35 @@ public final class TgmMessage {
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class Contact {
 		/**
-		 * Contact's phone number
+		 * Contact's phone number.
 		 */
 		@SerializedName("phone_number")
 		@Getter private String phoneNumber;
 
 		/**
-		 * Contact's first name
+		 * Contact's first name.
 		 */
 		@SerializedName("first_name")
 		@Getter private String firstName;
 
 		/**
-		 * Optional. Contact's last name
+		 * Optional.
+		 * Contact's last name.
 		 */
 		@SerializedName("last_name")
 		@Getter private String lastName;
 
 		/**
-		 * Optional. Contact's user identifier in Telegram
+		 * Optional.
+		 * Contact's user identifier in Telegram.
 		 */
 		@SerializedName("user_id")
 		@Getter private long userId = TgmEntity.INVALID_ID;
 	}
 
 	/**
-	 * Optional. Message is a shared location, information about the location
+	 * Optional.
+	 * Message is a shared location, information about the location.
 	 */
 	@Getter private Location location = null;
 
@@ -174,11 +194,4 @@ public final class TgmMessage {
 
 	 pinned_message	Message	Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
 	 */
-
-	/**
-	 * This is to provide lombok builder with some specific defaults.
-	 */
-	public static class Builder {
-		private long messageId = TgmEntity.INVALID_ID;
-	}
 }

@@ -61,8 +61,10 @@ public final class DemoBot {
 	}
 
 	private void setupBasicCommands() {
+		// TODO: re-implement command description & help thing
+		// final String description = "Starts the whole thing.";
 		tgmBot.getCommandsRegistry().addCommand(new TgmCommand(
-				"/start", "Starts the whole thing.",
+				"/start",
 				TgmUpdateFilters.NewMessage.HAS_SENDER,
 				new TgmCommandBody() {
 					@Override

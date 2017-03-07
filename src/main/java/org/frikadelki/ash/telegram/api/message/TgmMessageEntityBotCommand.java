@@ -16,20 +16,26 @@ import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public final class TgmMessageEntityBotCommand {
+
+	private static final String WHITE_SPACE_REGULAR_EXPRESSION = "\\s";
+	private static final Pattern WHITESPACE_PATTERN = Pattern.compile(WHITE_SPACE_REGULAR_EXPRESSION);
+
 	@Getter @NonNull private final TgmMessage message;
 	@Getter @NonNull private final TgmMessageEntity entity;
-
-	public static final String WHITE_SPACE_REGULAR_EXPRESSION = "\\s";
-	private static final Pattern WHITESPACE_PATTERN = Pattern.compile(WHITE_SPACE_REGULAR_EXPRESSION);
 
 	public String getCommandName() {
 		return entity.getEntityString(message.getText());
 	}
 
 	public TgmCommandArgument[] getArguments() {
-		return getArguments("\\s");
+		return getArguments(WHITE_SPACE_REGULAR_EXPRESSION);
 	}
 
+	/**
+	 * TODO: full doc
+	 * @param delimiterRegex -- TODO
+	 * @return parsed arguments or an empty array
+	 */
 	public TgmCommandArgument[] getArguments(@NonNull final String delimiterRegex) {
 		TgmMessageEntity nextAfterMe = null;
 		final Iterable<TgmMessageEntity> commands = message.getEntities(TgmMessageEntity.Type.BOT_COMMAND);
