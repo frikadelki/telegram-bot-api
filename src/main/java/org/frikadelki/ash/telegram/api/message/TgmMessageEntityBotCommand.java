@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public final class TgmMessageEntityBotCommand {
+	public static final int ARG_INDEX_ANY = -1;
 
 	private static final String WHITE_SPACE_REGULAR_EXPRESSION = "\\s";
 	private static final Pattern WHITESPACE_PATTERN = Pattern.compile(WHITE_SPACE_REGULAR_EXPRESSION);
@@ -25,6 +26,41 @@ public final class TgmMessageEntityBotCommand {
 
 	public String getCommandName() {
 		return entity.getEntityString(message.getText());
+	}
+
+	/**
+	 * See doc for {@link #getPrefixedArgument}.
+	 * @param argPrefix argument prefix to search for
+	 * @param atIndex search at specific index, {@link #ARG_INDEX_ANY} if you don't care
+	 * @return if there is argument with given prefix at given index
+	 */
+	public boolean hasPrefixedArgument(@NonNull final String argPrefix, final int atIndex) {
+		return null != getPrefixedArgument(argPrefix, atIndex);
+	}
+
+	/**
+	 * Tries to find given argument with given prefix at a given index.
+	 * If index is {@link #ARG_INDEX_ANY} returns first found argument with the given prefix.
+	 * Can be useful for finding stuff like "argX=z".
+	 * @param argPrefix prefix to search
+	 * @param atIndex search at specific index, {@link #ARG_INDEX_ANY} if you don't care
+	 * @return argument matching the criteria, or null
+	 */
+	public TgmCommandArgument getPrefixedArgument(@NonNull final String argPrefix, final int atIndex) {
+		final TgmCommandArgument[] arguments = getArguments();
+		if (ARG_INDEX_ANY != atIndex) {
+			final boolean hasIndexArg = atIndex < arguments.length;
+			final boolean prefixMatch = hasIndexArg && arguments[atIndex].getValue().startsWith(argPrefix);
+			return prefixMatch ? arguments[atIndex] : null;
+		}
+
+		for (final TgmCommandArgument argument : arguments) {
+			if (argument.getValue().startsWith(argPrefix)) {
+				return argument;
+			}
+		}
+
+		return null;
 	}
 
 	public TgmCommandArgument[] getArguments() {

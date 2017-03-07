@@ -68,6 +68,15 @@ public final class TgmMessage {
 	private List<TgmMessageEntity> entities;
 	private List<TgmMessageEntityBotCommand> entitiesCommands;  // commands wrappers cache
 
+	public boolean hasEntities(@NonNull final TgmMessageEntity.Type type) {
+		return (null != entities) && StreamCompat.has(entities, new Lambda.Predicate1<TgmMessageEntity>() {
+			@Override
+			public boolean is(final TgmMessageEntity tgmMessageEntity) {
+				return tgmMessageEntity.is(type);
+			}
+		});
+	}
+
 	/**
 	 * @param type type fo entities to return, passing null will return all entities
 	 * @return iterable of entities matching given type
