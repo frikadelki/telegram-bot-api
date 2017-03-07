@@ -32,7 +32,7 @@ You can use simple built-in commands dispatcher.
  
 ```
 tgmBot.getCommandsRegistry().addCommand(new TgmCommand(
-				"/start", "Starts the whole thing.",
+				"/start",
 				TgmUpdateFilters.NewMessage.HAS_SENDER,
 				new TgmCommandBody() {
 					@Override
