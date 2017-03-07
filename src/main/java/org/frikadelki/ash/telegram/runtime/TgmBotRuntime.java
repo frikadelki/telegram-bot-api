@@ -13,6 +13,7 @@ import org.frikadelki.ash.telegram.TgmConstants;
 import org.frikadelki.ash.telegram.api.base.TgmResponse;
 import org.frikadelki.ash.toolset.network.AshNetworkErrors;
 import org.frikadelki.ash.toolset.result.AshResult;
+import org.frikadelki.ash.toolset.result.AshResultMake;
 import org.frikadelki.ash.toolset.result.error.AshError;
 
 import java.io.IOException;
@@ -54,46 +55,48 @@ public final class TgmBotRuntime {
 			if (queryResult.isSuccess()) {
 				return parseResponse(queryResult.getData(), dataClass);
 			} else {
-				return new AshResult<>(queryResult.getError());
+				return AshResultMake.error(queryResult.getError());
 			}
 		}
 		catch (final IOException exception) {
 			final AshError error = AshNetworkErrors.connection(exception).build();
-			return new AshResult<>(error);
+			return AshResultMake.error(error);
 		}
 		catch (final JsonParseException exception) {
 			final AshError error = AshNetworkErrors.parser().debugDescription(exception.getMessage()).build();
-			return new AshResult<>(error);
+			return AshResultMake.error(error);
 		}
 		catch (final Exception exception) {
 			final AshError error = AshNetworkErrors.GENERIC.error().debugDescription(exception.getMessage()).build();
-			return new AshResult<>(error);
+			return AshResultMake.error(error);
 		}
 	}
 
 	private <TData> AshResult<TData> parseResponse(final String response, @NonNull final Class<TData> resultClass) throws JsonParseException {
 		final JsonElement jsonResponse = TgmJsonIO.parseJsonElement(response);
 		if (null == jsonResponse) {
-			return new AshResult<>(AshNetworkErrors.protocol(-1).debugDescription("No response.").build());
+			final AshError error = AshNetworkErrors.protocol(-1).debugDescription("No response.").build();
+			return AshResultMake.error(error);
 		}
 		final TgmResponse tgmResponse = TgmJsonIO.fromJson(jsonResponse, TgmResponse.class);
 		if (null == tgmResponse) {
-			return new AshResult<>(AshNetworkErrors.protocol(-2).debugDescription("No response.").build());
+			final AshError error = AshNetworkErrors.protocol(-2).debugDescription("No response.").build();
+			return AshResultMake.error(error);
 		}
 
 		if (tgmResponse.isOk()) {
 			if (Void.class == resultClass) {
-				return new AshResult<>((TData)null);
+				return AshResultMake.success();
 			} else {
 				final TData data = TgmJsonIO.fromJson(tgmResponse.getResult(), resultClass);
-				return new AshResult<>(data);
+				return AshResultMake.success(data);
 			}
 		} else {
 			final AshError error = AshNetworkErrors
 					.protocol(tgmResponse.getErrorCode())
 					.debugDescription(tgmResponse.getDescription())
 					.build();
-			return new AshResult<>(error);
+			return AshResultMake.error(error);
 		}
 	}
 }

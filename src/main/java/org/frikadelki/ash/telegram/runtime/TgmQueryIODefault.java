@@ -11,6 +11,7 @@ import org.frikadelki.ash.telegram.TgmConstants;
 import org.frikadelki.ash.toolset.network.AshHttp;
 import org.frikadelki.ash.toolset.network.AshNetworkErrors;
 import org.frikadelki.ash.toolset.result.AshResult;
+import org.frikadelki.ash.toolset.result.AshResultMake;
 import org.frikadelki.ash.toolset.utils.AshAssert;
 import org.frikadelki.ash.toolset.utils.IOBits;
 
@@ -49,9 +50,10 @@ public final class TgmQueryIODefault implements TgmQueryIO {
 			val httpSuccess = AshHttp.Code.isSuccessSubtype(httpResponseCode);
 			val replyInputStream =  httpSuccess ? connection.getInputStream() : httpConnection.getErrorStream();
 			val replyJsonBody = IOBits.streamToString(replyInputStream, TgmConstants.CHARSET, -1);
-			return new AshResult<>(replyJsonBody);
+			return AshResultMake.success(replyJsonBody);
 		} else {
-			return new AshResult<>(AshNetworkErrors.http(httpResponseCode, httpConnection.getResponseMessage()).build());
+			val error = AshNetworkErrors.http(httpResponseCode, httpConnection.getResponseMessage()).build();
+			return AshResultMake.error(error);
 		}
 	}
 }
