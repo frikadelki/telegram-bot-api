@@ -12,7 +12,8 @@ import org.frikadelki.ash.telegram.api.base.TgmEntity;
 import org.frikadelki.ash.telegram.api.chat.TgmChat;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
 import org.frikadelki.ash.toolset.utils.Lambda;
-import org.frikadelki.ash.toolset.utils.StreamCompat;
+import org.frikadelki.ash.toolset.utils.collections.StreamCompat;
+import org.frikadelki.ash.toolset.utils.collections.CollectionsConvert;
 
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +72,7 @@ public final class TgmMessage {
 
 	public Iterable<TgmMessageEntityBotCommand> getEntitiesCommands() {
 		if( entitiesCommands == null ) {
-			entitiesCommands = StreamCompat.toList(StreamCompat.select(getEntities(TgmMessageEntity.Type.BOT_COMMAND), new Lambda.FactoryCode1<TgmMessageEntityBotCommand, TgmMessageEntity>() {
+			entitiesCommands = CollectionsConvert.listFromIterable(StreamCompat.select(getEntities(TgmMessageEntity.Type.BOT_COMMAND), new Lambda.FactoryCode1<TgmMessageEntityBotCommand, TgmMessageEntity>() {
 				@Override
 				public TgmMessageEntityBotCommand produce(final TgmMessageEntity tgmMessageEntity) {
 					return new TgmMessageEntityBotCommand(TgmMessage.this, tgmMessageEntity);

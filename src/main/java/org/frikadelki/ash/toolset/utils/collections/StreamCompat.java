@@ -1,30 +1,23 @@
-// ASH Toolset
-// Copyright 2016 ASH Dev Team
-// Created by ein on 2016/5/20
+/*
+ * ASH Toolset
+ * Copyright 2017 ASH Dev Team
+ * Created by ein on 2017/3/4
+ */
 
-package org.frikadelki.ash.toolset.utils;
+package org.frikadelki.ash.toolset.utils.collections;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import lombok.val;
+import org.frikadelki.ash.toolset.utils.Lambda;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
 @UtilityClass
 public final class StreamCompat {
-	public static <T> ArrayList<T> toList(@NonNull final Iterable<? extends T> source) {
-		final ArrayList<T> result = new ArrayList<>();
-		for (final T t : source) {
-			result.add(t);
-		}
-
-		return result;
-	}
-
 	public static <T> void forEach(@NonNull final Iterable<? extends T> source, @NonNull final Lambda.Code1<T> action) {
 		//noinspection Convert2streamapi
 		for (final T t : source) {

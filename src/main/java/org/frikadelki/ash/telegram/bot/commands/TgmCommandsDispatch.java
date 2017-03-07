@@ -16,7 +16,7 @@ import org.frikadelki.ash.telegram.api.message.TgmMessageEntityBotCommand;
 import org.frikadelki.ash.telegram.api.update.*;
 import org.frikadelki.ash.toolset.utils.AshAssert;
 import org.frikadelki.ash.toolset.utils.Lambda;
-import org.frikadelki.ash.toolset.utils.StreamCompat;
+import org.frikadelki.ash.toolset.utils.collections.StreamCompat;
 
 import java.util.ArrayList;
 
@@ -63,6 +63,16 @@ public final class TgmCommandsDispatch implements TgmUpdateHandler, TgmCommandsR
 				handler.setFilterBotName(filterBotName);
 			}
 		});
+	}
+
+	@Override
+	public TgmUpdateFilter getFilter() {
+		return TgmUpdateFilters.ACCEPT_ALL;
+	}
+
+	@Override
+	public void dispatchUpdate(final TgmUpdateDispatchContext context, final TgmUpdate update) {
+		relay.dispatchUpdate(context, update);
 	}
 
 	@Log
@@ -134,15 +144,5 @@ public final class TgmCommandsDispatch implements TgmUpdateHandler, TgmCommandsR
 				return filterBotName.equalsIgnoreCase(botName) && commandName.equalsIgnoreCase(pureCommandName);
 			}
 		}
-	}
-
-	@Override
-	public TgmUpdateFilter getFilter() {
-		return TgmUpdateFilters.ACCEPT_ALL;
-	}
-
-	@Override
-	public void dispatchUpdate(final TgmUpdateDispatchContext context, final TgmUpdate update) {
-		relay.dispatchUpdate(context, update);
 	}
 }

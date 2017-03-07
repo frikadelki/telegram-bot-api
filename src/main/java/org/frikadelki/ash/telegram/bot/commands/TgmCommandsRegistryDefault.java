@@ -2,7 +2,7 @@ package org.frikadelki.ash.telegram.bot.commands;
 
 import org.frikadelki.ash.toolset.utils.AshAssert;
 import org.frikadelki.ash.toolset.utils.Lambda;
-import org.frikadelki.ash.toolset.utils.StreamCompat;
+import org.frikadelki.ash.toolset.utils.collections.StreamCompat;
 
 import java.util.ArrayList;
 
