@@ -19,7 +19,7 @@ public interface TgmBotApiUpdates {
 	/**
 	 * Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
 	 *
-	 * @param params parameters to use for uery
+	 * @param params parameters to use for query
 	 * @return result with list of updates of error on failure
 	 */
 	AshResult<TgmUpdate[]> getUpdates(final UpdatesParams params);

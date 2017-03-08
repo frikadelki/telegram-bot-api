@@ -7,13 +7,14 @@
 package org.frikadelki.ash.telegram.api.update;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.frikadelki.ash.telegram.api.base.TgmEntity;
 import org.frikadelki.ash.telegram.api.message.TgmMessage;
 
 
-@Builder(builderClassName = "Builder")
+@Builder(builderClassName = "Builder") // for unit tests
+@AllArgsConstructor(access = AccessLevel.PACKAGE) // for the above builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE) // for GSON
 public final class TgmUpdate {
 	@SerializedName("update_id")
 	@Getter private long updateId = TgmEntity.INVALID_ID;

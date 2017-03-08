@@ -22,7 +22,6 @@ import java.net.URL;
 
 
 public final class TgmBotRuntime {
-
 	private final URL baseUrl;
 	private final TgmQueryIO queryIO;
 
