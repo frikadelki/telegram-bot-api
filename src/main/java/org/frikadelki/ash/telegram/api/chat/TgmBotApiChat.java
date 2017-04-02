@@ -60,7 +60,11 @@ public interface TgmBotApiChat {
 		private final Long replyToMessageId;
 
 		/**
-		 * Optional. InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardHide or ForceReply
+		 * Optional.
+		 * InlineKeyboardMarkup or
+		 * {@link org.frikadelki.ash.telegram.api.chat.keyboard.TgmReplyKeyboardMarkup} or
+		 * {@link org.frikadelki.ash.telegram.api.chat.keyboard.TgmReplyKeyboardRemove} or
+		 * ForceReply.
 		 * Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
 		 * instructions to hide reply keyboard or to force a reply from the user.
 		 */

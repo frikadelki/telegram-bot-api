@@ -13,12 +13,12 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public final class TgmReplyKeyboardHide {
+public final class TgmReplyKeyboardRemove {
 
 	/**
 	 * Required. Requests clients to hide the custom keyboard
 	 */
-	@SerializedName("hide_keyboard")
+	@SerializedName("remove_keyboard")
 	@NonNull private final Boolean hideKeyboard;
 
 	/**
