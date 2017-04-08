@@ -29,7 +29,16 @@ public final class StreamCompat {
 		return where(source, predicate).iterator().hasNext();
 	}
 
-	public static <T> boolean has(@NonNull final Iterable<? extends T> source, @NonNull final T exactMatch) {
+	public static <T> boolean hasEqual(@NonNull final Iterable<? extends T> source, @NonNull final T searchValue) {
+		return where(source, new Lambda.Predicate1<T>() {
+			@Override
+			public boolean is(final T t) {
+				return (searchValue.equals(t));
+			}
+		}).iterator().hasNext();
+	}
+
+	public static <T> boolean hasSame(@NonNull final Iterable<? extends T> source, @NonNull final T exactMatch) {
 		return where(source, new Lambda.Predicate1<T>() {
 			@Override
 			public boolean is(final T t) {
