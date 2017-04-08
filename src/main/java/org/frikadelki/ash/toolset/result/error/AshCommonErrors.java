@@ -9,6 +9,7 @@ package org.frikadelki.ash.toolset.result.error;
 
 public enum AshCommonErrors implements AshErrorDomain {
 	UNKNOWN,
+	IO,
 	RELEASE_ASSERTION,
 	;
 

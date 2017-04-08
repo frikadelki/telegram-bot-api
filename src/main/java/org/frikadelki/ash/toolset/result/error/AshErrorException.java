@@ -10,8 +10,18 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+
 
 @RequiredArgsConstructor
 public class AshErrorException extends Exception {
 	@Getter @NonNull private final AshError error;
+
+	public AshErrorException(@NonNull final IOException ioException) {
+		error = AshCommonErrors.IO.error().code(-1).debugDescription(ioException.toString()).build();
+	}
+
+	public AshErrorException(@NonNull final RuntimeException runtimeException) {
+		error = AshCommonErrors.RELEASE_ASSERTION.error().code(-1).debugDescription(runtimeException.toString()).build();
+	}
 }
