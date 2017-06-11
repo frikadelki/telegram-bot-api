@@ -11,9 +11,10 @@ import lombok.*;
 import org.frikadelki.ash.telegram.api.base.TgmEntity;
 import org.frikadelki.ash.telegram.api.chat.TgmChat;
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
+import org.frikadelki.ash.toolset.utils.AshLocation;
 import org.frikadelki.ash.toolset.utils.Lambda;
-import org.frikadelki.ash.toolset.utils.collections.StreamCompat;
 import org.frikadelki.ash.toolset.utils.collections.CollectionsConvert;
+import org.frikadelki.ash.toolset.utils.collections.StreamCompat;
 
 import java.util.Collections;
 import java.util.List;
@@ -165,12 +166,21 @@ public final class TgmMessage {
 	 * Optional.
 	 * Message is a shared location, information about the location.
 	 */
-	@Getter private Location location = null;
+	@Getter private Location location;
 
+	@ToString
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class Location {
 		@Getter private double latitude = Double.NaN;
 		@Getter private double longitude = Double.NaN;
+
+		private boolean isValid() {
+			return AshLocation.isValidLocation(latitude, longitude);
+		}
+	}
+
+	public boolean hasLocation() {
+		return (null != location);
 	}
 
 	/*
