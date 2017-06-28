@@ -17,6 +17,10 @@ import java.io.IOException;
 public class AshErrorException extends Exception {
 	@Getter @NonNull private final AshError error;
 
+	public AshErrorException(@NonNull final AshErrorDomain errorDomain, @NonNull final String debugDescription) {
+		error = errorDomain.error().code(-1).debugDescription(debugDescription).build();
+	}
+
 	public AshErrorException(@NonNull final IOException ioException) {
 		error = AshCommonErrors.IO.error().code(-1).debugDescription(ioException.toString()).build();
 	}

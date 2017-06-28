@@ -21,6 +21,10 @@ public class AshLocation implements Serializable {
 	public static double MIN_LONGITUDE = -180;
 	public static double MAX_LONGITUDE = +180;
 
+	public static AshLocation makeInvalidLocation() {
+		return new AshLocation(Double.NaN, Double.NaN);
+	}
+
 	public static boolean isValidLocation(final double latitude, final double longitude) {
 		return isValidLatitude(latitude) && isValidLongitude(longitude);
 	}
