@@ -31,12 +31,4 @@ public final class AshError {
 		}
 		return localizer.localize(errorDomain, code);
 	}
-
-	public String getDebugDescription() {
-		if (null == debugDescription) {
-			final CharSequence localized = tryLocalize();
-			return (localized != null) ? localized.toString() : "";
-		}
-		return debugDescription;
-	}
 }
