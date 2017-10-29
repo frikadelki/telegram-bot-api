@@ -9,6 +9,8 @@ package org.frikadelki.ash.telegram.api.message;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
+
 import org.frikadelki.ash.telegram.api.chat.TgmUser;
 import org.frikadelki.ash.toolset.utils.AshAssert;
 
@@ -40,7 +42,7 @@ public final class TgmMessageEntity {
 	/**
 	 * Offset in UTF-16 code units to the start of the entity.
 	 */
-	@Getter private int offset = 0;
+	@Getter @Setter private int offset = 0;
 
 	/**
 	 * Length of the entity in UTF-16 code units.
