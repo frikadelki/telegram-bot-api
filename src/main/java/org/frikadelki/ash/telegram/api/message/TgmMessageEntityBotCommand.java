@@ -11,6 +11,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.frikadelki.ash.toolset.utils.StringSplit;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.regex.Pattern;
 
 
@@ -52,23 +55,86 @@ public final class TgmMessageEntityBotCommand {
 		final Pattern pattern = WHITE_SPACE_REGULAR_EXPRESSION.equals(delimiterRegex) ? WHITESPACE_PATTERN : Pattern.compile(delimiterRegex);
 		final StringSplit.StringPiece[] split = StringSplit.splitOrEmpty(arguments, pattern);
 
-		final TgmCommandArgument[] result = new TgmCommandArgument[split.length];
+		final ArrayList<TgmCommandArgument> commandArguments = new ArrayList<>();		
+		final Iterable<TgmMessageEntity> entities = message.getEntities(null);
+		
+		fillArgumentsFromEntities(commandArguments, entities, arguments, argumentsStart);
+		fillArgumentsWithoutEntity(commandArguments, entities, split, argumentsStart);
 
-		outer: for (int i = 0; i < split.length; i++) {
-			final StringSplit.StringPiece argumentToken = split[i];
+		return postProcessArguments(commandArguments);
+	}
 
-			final Iterable<TgmMessageEntity> entities = message.getEntities(null);
-			for (final TgmMessageEntity attachment : entities) {
-				if (argumentsStart + argumentToken.getStartIndex() == attachment.getOffset()
-						&& argumentsStart + argumentToken.getEndIndex() == attachment.getOffset() + attachment.getLength()) {
-					result[i] = new TgmCommandArgument(attachment, argumentToken.getValue());
-					continue outer;
-				}
+	private void fillArgumentsFromEntities(
+		final ArrayList<TgmCommandArgument> commandArguments,
+		final Iterable<TgmMessageEntity> entities,
+		final String arguments,
+		final int argumentsStart
+	) {
+		for (final TgmMessageEntity attachment : entities) {
+			// attachment interval: [attachmentBegin; attachmentEnd)
+			int attachmentBegin = attachment.getOffset();
+			int attachmentEnd = attachment.getOffset() + attachment.getLength();
+			if (attachmentBegin < argumentsStart) {
+				continue;
+			}
+			
+			attachmentBegin -= argumentsStart; 
+			attachmentEnd -= argumentsStart;
+			if (attachmentEnd > arguments.length()) {
+				// Something strange is happening.
+				continue;
 			}
 
-			result[i] = new TgmCommandArgument(null, argumentToken.getValue());
+			final String attachmentValue = arguments.substring(attachmentBegin, attachmentEnd);
+			commandArguments.add(new TgmCommandArgument(attachment, attachmentValue));
 		}
-
-		return result;
+	}
+	
+	private void fillArgumentsWithoutEntity(
+		final ArrayList<TgmCommandArgument> commandArguments,
+		final Iterable<TgmMessageEntity> entities,
+		final StringSplit.StringPiece[] split,
+		final int argumentsStart
+	) {
+		for (int i = 0; i < split.length; i++) {
+			final StringSplit.StringPiece argumentToken = split[i];
+			
+			boolean hasEntity = false;
+			for (final TgmMessageEntity attachment : entities) {
+				if (
+					   (argumentsStart + argumentToken.getStartIndex() >= attachment.getOffset())
+					&& (argumentsStart + argumentToken.getEndIndex() <= attachment.getOffset() + attachment.getLength())
+				) {
+					hasEntity = true;
+					break;
+				}
+			}
+			
+			if (false == hasEntity) {
+				final TgmMessageEntity messageEntityNull = new TgmMessageEntity();
+				messageEntityNull.setOffset(argumentsStart + argumentToken.getStartIndex());
+				commandArguments.add(new TgmCommandArgument(messageEntityNull, argumentToken.getValue()));
+			}
+		}
+	}
+	
+	private TgmCommandArgument[] postProcessArguments(final ArrayList<TgmCommandArgument> commandArguments) {
+		Collections.sort(commandArguments, new Comparator<TgmCommandArgument>() {
+			@Override
+			public int compare(final TgmCommandArgument lhs, final TgmCommandArgument rhs) {
+				return lhs.getAttachedEntity().getOffset() - rhs.getAttachedEntity().getOffset();
+			}
+		});
+		
+		final int commandArgumentsSize = commandArguments.size();
+		for (int i = 0; i < commandArgumentsSize; ++i) {
+			final TgmCommandArgument argument = commandArguments.get(i);
+			if (0 == argument.getAttachedEntity().getLength()) {
+				commandArguments.set(i, new TgmCommandArgument(null, argument.getValue()));
+			}
+		}
+		
+		final TgmCommandArgument[] result = new TgmCommandArgument[commandArguments.size()]; 
+		return commandArguments.toArray(result);
 	}
 }
