@@ -9,7 +9,7 @@ package org.frikadelki.ash.toolset.utils.collections;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.frikadelki.ash.toolset.utils.AshAssert;
+import org.frikadelki.ash.toolset.utils.RuntimeAssert;
 
 
 @RequiredArgsConstructor
@@ -37,10 +37,7 @@ public final class ArrayIterable<T> implements Iterable<T> {
 
 		@Override
 		public T next() {
-			AshAssert.aTrue(hasNext());
-			if (!hasNext()) {
-				return null;
-			}
+			RuntimeAssert.aTrue(hasNext());
 			return items[nextIndex++];
 		}
 

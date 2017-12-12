@@ -30,10 +30,6 @@ public final class RuntimeAssert {
 		}
 	}
 
-	public static void fail() {
-		fail("");
-	}
-
 	public static void fail(final String message) {
 		throw new IllegalStateException(message);
 	}

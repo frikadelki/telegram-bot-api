@@ -22,7 +22,8 @@ public final class CollectionsConvert {
 		return result;
 	}
 
-	public static <T> Iterable<T> iterableFromArray(final T[] items) {
+	@SafeVarargs
+	public static <T> Iterable<T> iterableFromArray(final T... items) {
 		return new ArrayIterable<>(items);
 	}
 }

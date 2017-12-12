@@ -83,6 +83,17 @@ public final class StreamCompat {
 		};
 	}
 
+	@SafeVarargs
+	public static <T> Iterable<T> concat(@NonNull final Iterable<T>... sources) {
+		final val sourcesIterable = CollectionsConvert.iterableFromArray(sources);
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new ConcatIterator<>(sourcesIterable.iterator());
+			}
+		};
+	}
+
 	@RequiredArgsConstructor
 	private static class SelectIterator<W, T> implements Iterator<W> {
 		@NonNull private final Iterator<? extends T> source;
