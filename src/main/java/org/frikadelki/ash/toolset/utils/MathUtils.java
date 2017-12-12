@@ -7,12 +7,11 @@
 package org.frikadelki.ash.toolset.utils;
 
 import lombok.experimental.UtilityClass;
-import sun.misc.DoubleConsts;
 
 
 @UtilityClass
 public final class MathUtils {
 	public static boolean isFinite(final double val) {
-		return (DoubleConsts.MAX_VALUE >= Math.abs(val));
+		return (Double.MAX_VALUE >= Math.abs(val));
 	}
 }
