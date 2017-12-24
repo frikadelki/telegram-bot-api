@@ -1,8 +1,10 @@
-package org.frikadelki.ash.toolset.utils;
-
 /*
-Created by GeneralGDA on 23-Jul-16.
-*/
+ * ASH Toolset
+ * Copyright 2017 ASH Dev Team
+ * Created by GeneralGDA on 2016/07/23.
+ */
+
+package org.frikadelki.ash.toolset.utils;
 
 import lombok.Getter;
 import lombok.NonNull;

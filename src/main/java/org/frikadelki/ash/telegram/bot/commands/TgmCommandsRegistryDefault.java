@@ -1,3 +1,9 @@
+/*
+ * ASH Toolset
+ * Copyright 2017 ASH Dev Team
+ * Created by frikadelki on 2017/12/25
+ */
+
 package org.frikadelki.ash.telegram.bot.commands;
 
 import org.frikadelki.ash.toolset.utils.AshAssert;
